@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Інтерактив: Де моє місце?</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f0f4f8;
+    margin: 0;
+    padding: 20px;
+  }
+  h1 {
+    text-align: center;
+    color: #333;
+  }
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 20px;
+  }
+  .category {
+    width: 28%;
+    min-height: 200px;
+    background: #fff;
+    border: 2px dashed #aaa;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+  .category h2 {
+    text-align: center;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #444;
+  }
+  .cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .card {
+    background: #fffae6;
+    border: 1px solid #ffc107;
+    border-radius: 8px;
+    padding: 8px;
+    margin: 5px;
+    cursor: grab;
+    width: 200px;
+    text-align: center;
+    font-size: 0.95em;
+  }
+  .card.dragging {
+    opacity: 0.5;
+  }
+</style>
+</head>
+<body>
+
+<h1>Інтерактив: Де моє місце?</h1>
+<p style="text-align:center;">Перетягніть картки з бізнес-ідеями у відповідну категорію. Якщо ідея поєднує два ринки, можна закинути її в обидві категорії.</p>
+
+<div class="cards" id="all-cards">
+  <div class="card" draggable="true">Додаток для пошуку команди для шкільних проєктів</div>
+  <div class="card" draggable="true">Кафе для власників домашніх тварин</div>
+  <div class="card" draggable="true">Курси математики через гру</div>
+  <div class="card" draggable="true">Еко-пляшки з персональним дизайном</div>
+  <div class="card" draggable="true">Сервіс швидких конспектів</div>
+  <div class="card" draggable="true">Мобільний додаток для доставки їжі з локальних кафе</div>
+  <div class="card" draggable="true">Онлайн-платформа для творчих конкурсів</div>
+  <div class="card" draggable="true">Магазин екологічного одягу для підлітків</div>
+  <div class="card" draggable="true">VR-ігри для розвитку логіки та пам’яті</div>
+  <div class="card" draggable="true">Сервіс швидкого бронювання спортивних секцій</div>
+</div>
+
+<div class="container">
+  <div class="category" data-name="Їжа та кафе"><h2>🍔 Їжа та кафе</h2></div>
+  <div class="category" data-name="Освіта"><h2>📚 Освіта</h2></div>
+  <div class="category" data-name="Ігри та розваги"><h2>🎮 Ігри та розваги</h2></div>
+  <div class="category" data-name="Технології"><h2>💻 Технології</h2></div>
+  <div class="category" data-name="Еко та здоров’я"><h2>🌱 Еко та здоров’я</h2></div>
+  <div class="category" data-name="Одяг та стиль"><h2>👕 Одяг та стиль</h2></div>
+  <div class="category" data-name="Сервіси та доставка"><h2>🚚 Сервіси та доставка</h2></div>
+</div>
+
+<script>
+  const cards = document.querySelectorAll('.card');
+  const categories = document.querySelectorAll('.category');
+  let draggedCard = null;
+
+  cards.forEach(card => {
+    card.addEventListener('dragstart', () => {
+      draggedCard = card;
+      card.classList.add('dragging');
+    });
+    card.addEventListener('dragend', () => {
+      draggedCard = null;
+      card.classList.remove('dragging');
+    });
+  });
+
+  categories.forEach(cat => {
+    cat.addEventListener('dragover', e => e.preventDefault());
+    cat.addEventListener('drop', () => {
+      if(draggedCard) {
+        // Копіюємо картку, щоб можна було закинути у дві категорії
+        const clone = draggedCard.cloneNode(true);
+        clone.addEventListener('dragstart', () => {
+          draggedCard = clone;
+          clone.classList.add('dragging');
+        });
+        clone.addEventListener('dragend', () => {
+          draggedCard = null;
+          clone.classList.remove('dragging');
+        });
+        cat.appendChild(clone);
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
