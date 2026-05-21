@@ -3,224 +3,159 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Інтерактив: Де моє місце?</title>
+<title>Де моє місце?</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
-
-/* Загальні стилі */
 body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  background: linear-gradient(135deg, #0c1b38, #1b2b55);
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-  padding: 20px;
+    font-family: 'Segoe UI', sans-serif;
+    background: #1b1b2f;
+    color: #fff;
+    margin: 0;
+    padding: 20px;
 }
 
-/* Заголовок */
 h1 {
-  font-weight: 600;
-  font-size: 2em;
-  text-align: center;
-  margin-bottom: 5px;
-}
-p {
-  text-align: center;
-  margin: 0 0 20px;
-  font-size: 1em;
-  color: #d0d0d0;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-/* Контейнер карток */
-.cards-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-  max-width: 1200px;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  overflow-x: auto;
+#cards, .category {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
-/* Картки бізнес-ідей */
+#cards {
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
 .card {
-  border-radius: 12px;
-  padding: 14px 16px;
-  min-width: 200px;
-  max-width: 220px;
-  cursor: grab;
-  text-align: center;
-  font-weight: 500;
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-  position: relative;
-  transition: transform 0.2s, box-shadow 0.2s;
-  border: 2px solid transparent;
+    background: #2c2c3c;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: grab;
+    min-width: 200px;
+    user-select: none;
+    position: relative;
 }
 
-/* Hover ефект */
-.card:hover {
-  transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 8px 20px rgba(255, 215, 0, 0.5);
-  border-color: #ffd700;
-}
-
-/* Drag */
 .card.dragging {
-  opacity: 0.6;
+    opacity: 0.5;
 }
 
-/* Верхній ряд карток — колірні стеки */
-.cards-container .card:nth-child(-n+5) {
-  background: #3d1f52; /* фіолетовий */
-}
-.cards-container .card:nth-child(n+6) {
-  background: #1f3461; /* синій */
+.card button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: red;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
 }
 
-/* Контейнер категорій */
 .categories {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 15px;
-  max-width: 1200px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
 }
 
-/* Категорії */
 .category {
-  min-height: 150px;
-  background: linear-gradient(145deg, #162144, #1b2755);
-  border: 2px dashed #555;
-  border-radius: 12px;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  transition: background 0.3s, border-color 0.3s;
+    background: #2c2c3c;
+    padding: 10px;
+    border-radius: 8px;
+    min-height: 120px;
 }
 
-/* Заголовки категорій */
-.category h2 {
-  margin: 0 0 10px;
-  font-size: 1.1em;
+.category h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.1em;
+    text-align: center;
 }
 
-/* Dragover ефект */
-.category.drag-over {
-  border-color: #ffd700;
-  background: linear-gradient(145deg, #1d2c5a, #253c7c);
-}
-
-/* Картки всередині категорій */
-.category .card {
-  margin: 5px 0;
-}
-
-/* Кнопка видалення картки */
-.remove-btn {
-  position: absolute;
-  top: 2px;
-  right: 4px;
-  cursor: pointer;
-  color: #ffd700;
-  font-weight: bold;
-  transition: transform 0.2s;
-}
-.remove-btn:hover {
-  transform: scale(1.2);
-}
-
-/* Scrollbar */
-::-webkit-scrollbar {
-  height: 6px;
-}
-::-webkit-scrollbar-thumb {
-  background: #555;
-  border-radius: 3px;
+.category.highlight {
+    outline: 2px dashed #fff;
 }
 </style>
 </head>
 <body>
 
 <h1>Інтерактив: Де моє місце?</h1>
-<p>Перетягніть картки з бізнес-ідеями у відповідну категорію. Можна клонувати картку у дві категорії, кнопка × видаляє її з категорії.</p>
 
-<div class="cards-container" id="all-cards">
-  <div class="card" draggable="true">Додаток для пошуку команди для шкільних проєктів</div>
-  <div class="card" draggable="true">Кафе для власників домашніх тварин</div>
-  <div class="card" draggable="true">Курси математики через гру</div>
-  <div class="card" draggable="true">Еко-пляшки з персональним дизайном</div>
-  <div class="card" draggable="true">Сервіс швидких конспектів</div>
-  <div class="card" draggable="true">Мобільний додаток для доставки їжі з локальних кафе</div>
-  <div class="card" draggable="true">Онлайн-платформа для творчих конкурсів</div>
-  <div class="card" draggable="true">Магазин екологічного одягу для підлітків</div>
-  <div class="card" draggable="true">VR-ігри для розвитку логіки та пам’яті</div>
-  <div class="card" draggable="true">Сервіс швидкого бронювання спортивних секцій</div>
+<div id="cards">
+    <div class="card" draggable="true" data-categories="Технології,Освіта">Додаток для пошуку команди для шкільних проєктів</div>
+    <div class="card" draggable="true" data-categories="Їжа та кафе">Кафе для власників домашніх тварин</div>
+    <div class="card" draggable="true" data-categories="Освіта,Ігри та розваги">Курси математики через гру</div>
+    <div class="card" draggable="true" data-categories="Еко та здоров’я">Еко-пляшки з персональним дизайном</div>
+    <div class="card" draggable="true" data-categories="Освіта,Технології">Сервіс швидких конспектів</div>
+    <div class="card" draggable="true" data-categories="Сервіси та доставка,Їжа та кафе">Мобільний додаток для доставки їжі з локальних кафе</div>
+    <div class="card" draggable="true" data-categories="Освіта,Ігри та розваги">Онлайн-платформа для творчих конкурсів</div>
+    <div class="card" draggable="true" data-categories="Одяг та стиль,Еко та здоров’я">Магазин екологічного одягу для підлітків</div>
+    <div class="card" draggable="true" data-categories="Ігри та розваги,Технології">VR-ігри для розвитку логіки та пам’яті</div>
+    <div class="card" draggable="true" data-categories="Сервіси та доставка,Технології">Сервіс швидкого бронювання спортивних секцій</div>
 </div>
 
 <div class="categories">
-  <div class="category" data-name="Їжа та кафе"><h2>Їжа та кафе</h2></div>
-  <div class="category" data-name="Освіта"><h2>Освіта</h2></div>
-  <div class="category" data-name="Ігри та розваги"><h2>Ігри та розваги</h2></div>
-  <div class="category" data-name="Технології"><h2>Технології</h2></div>
-  <div class="category" data-name="Еко та здоров’я"><h2>Еко та здоров’я</h2></div>
-  <div class="category" data-name="Одяг та стиль"><h2>Одяг та стиль</h2></div>
-  <div class="category" data-name="Сервіси та доставка"><h2>Сервіси та доставка</h2></div>
+    <div class="category" data-category="Їжа та кафе"><h3>Їжа та кафе</h3></div>
+    <div class="category" data-category="Освіта"><h3>Освіта</h3></div>
+    <div class="category" data-category="Ігри та розваги"><h3>Ігри та розваги</h3></div>
+    <div class="category" data-category="Технології"><h3>Технології</h3></div>
+    <div class="category" data-category="Еко та здоров’я"><h3>Еко та здоров’я</h3></div>
+    <div class="category" data-category="Одяг та стиль"><h3>Одяг та стиль</h3></div>
+    <div class="category" data-category="Сервіси та доставка"><h3>Сервіси та доставка</h3></div>
 </div>
 
 <script>
 const cards = document.querySelectorAll('.card');
 const categories = document.querySelectorAll('.category');
+
 let draggedCard = null;
 
-// Drag карток
 cards.forEach(card => {
-  card.addEventListener('dragstart', () => {
-    draggedCard = card;
-    card.classList.add('dragging');
-  });
-  card.addEventListener('dragend', () => {
-    draggedCard = null;
-    card.classList.remove('dragging');
-  });
+    card.addEventListener('dragstart', e => {
+        draggedCard = card;
+        card.classList.add('dragging');
+    });
+
+    card.addEventListener('dragend', e => {
+        draggedCard = null;
+        card.classList.remove('dragging');
+    });
+
+    const closeBtn = document.createElement('button');
+    closeBtn.textContent = '×';
+    closeBtn.addEventListener('click', (e) => {
+        card.remove();
+    });
+    card.appendChild(closeBtn);
 });
 
-// Drop в категорії
 categories.forEach(cat => {
-  cat.addEventListener('dragover', e => {
-    e.preventDefault();
-    cat.classList.add('drag-over');
-  });
-  cat.addEventListener('dragleave', () => cat.classList.remove('drag-over'));
-  cat.addEventListener('drop', () => {
-    if(draggedCard){
-      const clone = draggedCard.cloneNode(true);
-
-      // Додати кнопку видалення
-      const removeBtn = document.createElement('span');
-      removeBtn.textContent = '×';
-      removeBtn.classList.add('remove-btn');
-      removeBtn.addEventListener('click', () => clone.remove());
-      clone.appendChild(removeBtn);
-
-      clone.addEventListener('dragstart', () => {
-        draggedCard = clone;
-        clone.classList.add('dragging');
-      });
-      clone.addEventListener('dragend', () => {
-        draggedCard = null;
-        clone.classList.remove('dragging');
-      });
-
-      cat.appendChild(clone);
-      cat.classList.remove('drag-over');
-    }
-  });
+    cat.addEventListener('dragover', e => {
+        e.preventDefault();
+        cat.classList.add('highlight');
+    });
+    cat.addEventListener('dragleave', e => {
+        cat.classList.remove('highlight');
+    });
+    cat.addEventListener('drop', e => {
+        e.preventDefault();
+        cat.classList.remove('highlight');
+        const categoryName = cat.dataset.category;
+        const cardCategories = draggedCard.dataset.categories.split(',');
+        if(cardCategories.includes(categoryName)) {
+            // клонувати картку
+            const clone = draggedCard.cloneNode(true);
+            clone.querySelector('button').addEventListener('click', () => clone.remove());
+            cat.appendChild(clone);
+        } else {
+            // якщо картка не належить цій категорії, просто перемістити
+            cat.appendChild(draggedCard);
+        }
+    });
 });
 </script>
 
