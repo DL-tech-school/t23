@@ -14,6 +14,7 @@ body {
 h1 {
     text-align: center;
     margin-bottom: 10px;
+    color: #00dfff; /* блакитний неоновий */
 }
 #instruction {
     text-align: center;
@@ -39,21 +40,31 @@ h1 {
     display: flex;
     align-items: center;
     position: relative;
+    transition: box-shadow 0.2s;
 }
 .card.dragging {
     opacity: 0.5;
 }
+.card:hover {
+    box-shadow: 0 0 8px #00dfff;
+}
 .card button {
     margin-left: 8px;
-    background: red;
-    border: none;
-    color: white;
+    background: #222c3c;
+    border: 1px solid #00dfff;
+    color: #00dfff;
     border-radius: 50%;
     width: 18px;
     height: 18px;
     cursor: pointer;
     font-size: 14px;
     font-weight: bold;
+    transition: all 0.2s;
+}
+.card button:hover {
+    color: #fff;
+    background: #00dfff;
+    box-shadow: 0 0 6px #00dfff;
 }
 
 /* Категорії */
@@ -67,6 +78,7 @@ h1 {
     padding: 10px;
     border-radius: 8px;
     min-height: 100px;
+    transition: box-shadow 0.2s;
 }
 .category h3 {
     margin: 0 0 10px 0;
@@ -74,7 +86,8 @@ h1 {
     text-align: center;
 }
 .category.highlight {
-    outline: 2px dashed #fff;
+    outline: 2px dashed #00dfff;
+    box-shadow: 0 0 10px #00dfff;
 }
 </style>
 </head>
@@ -112,7 +125,6 @@ const categories = document.querySelectorAll('.category');
 
 let draggedCard = null;
 
-// Drag & drop
 cards.forEach(card => {
     card.addEventListener('dragstart', () => {
         draggedCard = card;
@@ -123,11 +135,8 @@ cards.forEach(card => {
         card.classList.remove('dragging');
     });
 
-    // Кнопка видалення
     const btn = card.querySelector('button');
-    btn.addEventListener('click', () => {
-        card.remove();
-    });
+    btn.addEventListener('click', () => card.remove());
 });
 
 categories.forEach(cat => {
@@ -135,20 +144,16 @@ categories.forEach(cat => {
         e.preventDefault();
         cat.classList.add('highlight');
     });
-    cat.addEventListener('dragleave', () => {
-        cat.classList.remove('highlight');
-    });
+    cat.addEventListener('dragleave', () => cat.classList.remove('highlight'));
     cat.addEventListener('drop', () => {
         cat.classList.remove('highlight');
         const catName = cat.dataset.category;
         const cardCategories = draggedCard.dataset.categories.split(',');
         if(cardCategories.includes(catName)){
-            // Клонувати
             const clone = draggedCard.cloneNode(true);
             clone.querySelector('button').addEventListener('click', () => clone.remove());
             cat.appendChild(clone);
         } else {
-            // Перемістити
             cat.appendChild(draggedCard);
         }
     });
