@@ -6,76 +6,73 @@
 <title>Де моє місце?</title>
 <style>
 body {
-    font-family: 'Segoe UI', sans-serif;
     background: #1b1b2f;
     color: #fff;
-    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
     padding: 20px;
 }
-
 h1 {
     text-align: center;
+    margin-bottom: 10px;
+}
+#instruction {
+    text-align: center;
     margin-bottom: 20px;
+    font-size: 0.95em;
+    color: #ccc;
 }
 
-#cards, .category {
+/* Картки зверху */
+#cards {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-}
-
-#cards {
     justify-content: center;
     margin-bottom: 30px;
 }
-
 .card {
     background: #2c2c3c;
-    padding: 10px 15px;
+    padding: 8px 12px;
     border-radius: 8px;
     cursor: grab;
-    min-width: 200px;
     user-select: none;
+    display: flex;
+    align-items: center;
     position: relative;
 }
-
 .card.dragging {
     opacity: 0.5;
 }
-
 .card button {
-    position: absolute;
-    top: 5px;
-    right: 5px;
+    margin-left: 8px;
     background: red;
     border: none;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
     color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
     cursor: pointer;
+    font-size: 14px;
     font-weight: bold;
 }
 
+/* Категорії */
 .categories {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 15px;
 }
-
 .category {
     background: #2c2c3c;
     padding: 10px;
     border-radius: 8px;
-    min-height: 120px;
+    min-height: 100px;
 }
-
 .category h3 {
     margin: 0 0 10px 0;
     font-size: 1.1em;
     text-align: center;
 }
-
 .category.highlight {
     outline: 2px dashed #fff;
 }
@@ -84,18 +81,19 @@ h1 {
 <body>
 
 <h1>Інтерактив: Де моє місце?</h1>
+<div id="instruction">Перетягніть картки з бізнес-ідеями у відповідну категорію. Якщо ідея підходить до кількох категорій — клонувати її можна в обидві.</div>
 
 <div id="cards">
-    <div class="card" draggable="true" data-categories="Технології,Освіта">Додаток для пошуку команди для шкільних проєктів</div>
-    <div class="card" draggable="true" data-categories="Їжа та кафе">Кафе для власників домашніх тварин</div>
-    <div class="card" draggable="true" data-categories="Освіта,Ігри та розваги">Курси математики через гру</div>
-    <div class="card" draggable="true" data-categories="Еко та здоров’я">Еко-пляшки з персональним дизайном</div>
-    <div class="card" draggable="true" data-categories="Освіта,Технології">Сервіс швидких конспектів</div>
-    <div class="card" draggable="true" data-categories="Сервіси та доставка,Їжа та кафе">Мобільний додаток для доставки їжі з локальних кафе</div>
-    <div class="card" draggable="true" data-categories="Освіта,Ігри та розваги">Онлайн-платформа для творчих конкурсів</div>
-    <div class="card" draggable="true" data-categories="Одяг та стиль,Еко та здоров’я">Магазин екологічного одягу для підлітків</div>
-    <div class="card" draggable="true" data-categories="Ігри та розваги,Технології">VR-ігри для розвитку логіки та пам’яті</div>
-    <div class="card" draggable="true" data-categories="Сервіси та доставка,Технології">Сервіс швидкого бронювання спортивних секцій</div>
+    <div class="card" draggable="true" data-categories="Технології,Освіта">Додаток для пошуку команди для шкільних проєктів <button>×</button></div>
+    <div class="card" draggable="true" data-categories="Їжа та кафе">Кафе для власників домашніх тварин <button>×</button></div>
+    <div class="card" draggable="true" data-categories="Освіта,Ігри та розваги">Курси математики через гру <button>×</button></div>
+    <div class="card" draggable="true" data-categories="Еко та здоров’я">Еко-пляшки з персональним дизайном <button>×</button></div>
+    <div class="card" draggable="true" data-categories="Освіта,Технології">Сервіс швидких конспектів <button>×</button></div>
+    <div class="card" draggable="true" data-categories="Сервіси та доставка,Їжа та кафе">Мобільний додаток для доставки їжі з локальних кафе <button>×</button></div>
+    <div class="card" draggable="true" data-categories="Освіта,Ігри та розваги">Онлайн-платформа для творчих конкурсів <button>×</button></div>
+    <div class="card" draggable="true" data-categories="Одяг та стиль,Еко та здоров’я">Магазин екологічного одягу для підлітків <button>×</button></div>
+    <div class="card" draggable="true" data-categories="Ігри та розваги,Технології">VR-ігри для розвитку логіки та пам’яті <button>×</button></div>
+    <div class="card" draggable="true" data-categories="Сервіси та доставка,Технології">Сервіс швидкого бронювання спортивних секцій <button>×</button></div>
 </div>
 
 <div class="categories">
@@ -114,23 +112,22 @@ const categories = document.querySelectorAll('.category');
 
 let draggedCard = null;
 
+// Drag & drop
 cards.forEach(card => {
-    card.addEventListener('dragstart', e => {
+    card.addEventListener('dragstart', () => {
         draggedCard = card;
         card.classList.add('dragging');
     });
-
-    card.addEventListener('dragend', e => {
+    card.addEventListener('dragend', () => {
         draggedCard = null;
         card.classList.remove('dragging');
     });
 
-    const closeBtn = document.createElement('button');
-    closeBtn.textContent = '×';
-    closeBtn.addEventListener('click', (e) => {
+    // Кнопка видалення
+    const btn = card.querySelector('button');
+    btn.addEventListener('click', () => {
         card.remove();
     });
-    card.appendChild(closeBtn);
 });
 
 categories.forEach(cat => {
@@ -138,21 +135,20 @@ categories.forEach(cat => {
         e.preventDefault();
         cat.classList.add('highlight');
     });
-    cat.addEventListener('dragleave', e => {
+    cat.addEventListener('dragleave', () => {
         cat.classList.remove('highlight');
     });
-    cat.addEventListener('drop', e => {
-        e.preventDefault();
+    cat.addEventListener('drop', () => {
         cat.classList.remove('highlight');
-        const categoryName = cat.dataset.category;
+        const catName = cat.dataset.category;
         const cardCategories = draggedCard.dataset.categories.split(',');
-        if(cardCategories.includes(categoryName)) {
-            // клонувати картку
+        if(cardCategories.includes(catName)){
+            // Клонувати
             const clone = draggedCard.cloneNode(true);
             clone.querySelector('button').addEventListener('click', () => clone.remove());
             cat.appendChild(clone);
         } else {
-            // якщо картка не належить цій категорії, просто перемістити
+            // Перемістити
             cat.appendChild(draggedCard);
         }
     });
