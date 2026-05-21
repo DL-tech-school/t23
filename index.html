@@ -10,7 +10,7 @@
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
-  background: linear-gradient(135deg, #0b1d3f, #1a2a55);
+  background: linear-gradient(145deg, #0a1a3a, #10264d);
   color: #eee;
   display: flex;
   flex-direction: column;
@@ -39,13 +39,13 @@ p {
   flex-wrap: wrap;
   justify-content: center;
   max-width: 1200px;
-  gap: 10px;
+  gap: 12px;
   padding: 10px 0;
   overflow-x: auto;
 }
 
 .card {
-  background: #1f2a4a;
+  background: #1f2b50;
   border-radius: 12px;
   padding: 12px 16px;
   min-width: 200px;
@@ -53,9 +53,10 @@ p {
   cursor: grab;
   text-align: center;
   color: #fff;
-  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.2);
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.15);
   transition: transform 0.2s, box-shadow 0.2s, border 0.2s;
   user-select: none;
+  position: relative;
   border: 2px solid transparent;
 }
 
@@ -79,7 +80,7 @@ p {
 
 .category {
   min-height: 150px;
-  background: #162244;
+  background: linear-gradient(145deg, #162144, #1b2755);
   border: 2px dashed #555;
   border-radius: 12px;
   padding: 10px;
@@ -87,7 +88,7 @@ p {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  transition: background 0.2s, border-color 0.2s;
+  transition: background 0.3s, border-color 0.3s;
 }
 
 .category h2 {
@@ -98,26 +99,31 @@ p {
 
 .category.drag-over {
   border-color: #ffd700;
-  background: #1b2a4a;
+  background: linear-gradient(145deg, #1d2c5a, #253c7c);
 }
 
 .category .card {
   margin: 5px 0;
-  position: relative;
 }
 
-.category .remove-btn {
+.remove-btn {
   position: absolute;
   top: 2px;
   right: 4px;
   cursor: pointer;
   color: #ffd700;
   font-weight: bold;
+  transition: transform 0.2s;
+}
+
+.remove-btn:hover {
+  transform: scale(1.2);
 }
 
 ::-webkit-scrollbar {
   height: 6px;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #555;
   border-radius: 3px;
@@ -181,11 +187,14 @@ categories.forEach(cat => {
   cat.addEventListener('drop', () => {
     if(draggedCard) {
       const clone = draggedCard.cloneNode(true);
-      // Додати кнопку видалення
+
+      // кнопка видалення
       const removeBtn = document.createElement('span');
       removeBtn.textContent = '×';
       removeBtn.classList.add('remove-btn');
-      removeBtn.addEventListener('click', () => clone.remove());
+      removeBtn.addEventListener('click', () => {
+        clone.remove();
+      });
       clone.appendChild(removeBtn);
 
       clone.addEventListener('dragstart', () => {
