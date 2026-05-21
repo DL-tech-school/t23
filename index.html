@@ -5,112 +5,123 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Інтерактив: Де моє місце?</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
-  body {
-    margin: 0;
-    font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, #1a1a1a, #121212);
-    color: #eee;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100vh;
-    overflow: hidden;
-  }
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #0b1d3f, #1a2a55);
+  color: #eee;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+}
 
-  h1 {
-    margin: 20px 0 5px;
-    font-weight: 600;
-    font-size: 2em;
-    text-align: center;
-    color: #fff;
-  }
+h1 {
+  margin: 20px 0 5px;
+  font-weight: 600;
+  font-size: 2em;
+  text-align: center;
+  color: #fff;
+}
 
-  p {
-    text-align: center;
-    margin: 0 20px 20px;
-    font-size: 1em;
-    color: #bbb;
-  }
+p {
+  text-align: center;
+  margin: 0 20px 20px;
+  font-size: 1em;
+  color: #ccc;
+}
 
-  .cards-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    max-width: 1200px;
-    gap: 10px;
-    padding: 10px 0;
-    overflow-x: auto;
-  }
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 1200px;
+  gap: 10px;
+  padding: 10px 0;
+  overflow-x: auto;
+}
 
-  .card {
-    background: #2a2a2a;
-    border-radius: 12px;
-    padding: 12px 16px;
-    min-width: 200px;
-    max-width: 220px;
-    cursor: grab;
-    text-align: center;
-    color: #fff;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    transition: transform 0.2s, box-shadow 0.2s;
-    user-select: none;
-  }
+.card {
+  background: #1f2a4a;
+  border-radius: 12px;
+  padding: 12px 16px;
+  min-width: 200px;
+  max-width: 220px;
+  cursor: grab;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s, border 0.2s;
+  user-select: none;
+  border: 2px solid transparent;
+}
 
-  .card:hover {
-    transform: translateY(-4px) scale(1.05);
-    box-shadow: 0 8px 20px rgba(255,255,255,0.1);
-  }
+.card:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(255, 215, 0, 0.5);
+  border-color: #ffd700;
+}
 
-  .card.dragging {
-    opacity: 0.6;
-  }
+.card.dragging {
+  opacity: 0.6;
+}
 
-  .categories {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 15px;
-    max-width: 1200px;
-    padding: 10px;
-  }
+.categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+  max-width: 1200px;
+  padding: 10px;
+}
 
-  .category {
-    min-height: 150px;
-    background: #222;
-    border: 2px dashed #555;
-    border-radius: 12px;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    transition: background 0.2s, border-color 0.2s;
-  }
+.category {
+  min-height: 150px;
+  background: #162244;
+  border: 2px dashed #555;
+  border-radius: 12px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  transition: background 0.2s, border-color 0.2s;
+}
 
-  .category h2 {
-    margin: 0 0 10px;
-    font-size: 1.1em;
-    color: #fff;
-  }
+.category h2 {
+  margin: 0 0 10px;
+  font-size: 1.1em;
+  color: #fff;
+}
 
-  .category.drag-over {
-    border-color: #ff9800;
-    background: #2d2d2d;
-  }
+.category.drag-over {
+  border-color: #ffd700;
+  background: #1b2a4a;
+}
 
-  .category .card {
-    margin: 5px 0;
-  }
+.category .card {
+  margin: 5px 0;
+  position: relative;
+}
 
-  /* Сховати вертикальний скрол */
-  ::-webkit-scrollbar {
-    height: 6px;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #555;
-    border-radius: 3px;
-  }
+.category .remove-btn {
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  cursor: pointer;
+  color: #ffd700;
+  font-weight: bold;
+}
+
+::-webkit-scrollbar {
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 3px;
+}
 </style>
 </head>
 <body>
@@ -142,47 +153,55 @@
 </div>
 
 <script>
-  const cards = document.querySelectorAll('.card');
-  const categories = document.querySelectorAll('.category');
-  let draggedCard = null;
+const cards = document.querySelectorAll('.card');
+const categories = document.querySelectorAll('.category');
+let draggedCard = null;
 
-  cards.forEach(card => {
-    card.addEventListener('dragstart', () => {
-      draggedCard = card;
-      card.classList.add('dragging');
-    });
-    card.addEventListener('dragend', () => {
-      draggedCard = null;
-      card.classList.remove('dragging');
-    });
+cards.forEach(card => {
+  card.addEventListener('dragstart', () => {
+    draggedCard = card;
+    card.classList.add('dragging');
+  });
+  card.addEventListener('dragend', () => {
+    draggedCard = null;
+    card.classList.remove('dragging');
+  });
+});
+
+categories.forEach(cat => {
+  cat.addEventListener('dragover', e => {
+    e.preventDefault();
+    cat.classList.add('drag-over');
   });
 
-  categories.forEach(cat => {
-    cat.addEventListener('dragover', e => {
-      e.preventDefault();
-      cat.classList.add('drag-over');
-    });
+  cat.addEventListener('dragleave', () => {
+    cat.classList.remove('drag-over');
+  });
 
-    cat.addEventListener('dragleave', () => {
+  cat.addEventListener('drop', () => {
+    if(draggedCard) {
+      const clone = draggedCard.cloneNode(true);
+      // Додати кнопку видалення
+      const removeBtn = document.createElement('span');
+      removeBtn.textContent = '×';
+      removeBtn.classList.add('remove-btn');
+      removeBtn.addEventListener('click', () => clone.remove());
+      clone.appendChild(removeBtn);
+
+      clone.addEventListener('dragstart', () => {
+        draggedCard = clone;
+        clone.classList.add('dragging');
+      });
+      clone.addEventListener('dragend', () => {
+        draggedCard = null;
+        clone.classList.remove('dragging');
+      });
+
+      cat.appendChild(clone);
       cat.classList.remove('drag-over');
-    });
-
-    cat.addEventListener('drop', () => {
-      if(draggedCard) {
-        const clone = draggedCard.cloneNode(true);
-        clone.addEventListener('dragstart', () => {
-          draggedCard = clone;
-          clone.classList.add('dragging');
-        });
-        clone.addEventListener('dragend', () => {
-          draggedCard = null;
-          clone.classList.remove('dragging');
-        });
-        cat.appendChild(clone);
-        cat.classList.remove('drag-over');
-      }
-    });
+    }
   });
+});
 </script>
 
 </body>
